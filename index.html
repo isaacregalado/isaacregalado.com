@@ -3,13 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M2 16 Q16 4 30 16 Q16 28 2 16Z' fill='none' stroke='%231F6B52' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%231F6B52'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%97%BD%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:site_name" content="Isaac Regalado">
 <meta property="og:title" content="Isaac Regalado">
-<meta property="og:description" content="Getting AI out of the lab and into people's work.">
+<meta property="og:description" content="Product strategy and operations at Google. I get AI out of the lab and into people's work.">
 <meta property="og:url" content="https://isaacregalado.com/">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://isaacregalado.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Isaac Regalado. I get AI out of the lab and into people's work. A line drawing of the New York skyline at night, seen across the water from Long Island.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Isaac Regalado">
+<meta name="twitter:description" content="Product strategy and operations at Google. I get AI out of the lab and into people's work.">
+<meta name="twitter:image" content="https://isaacregalado.com/og.png">
 <link rel="canonical" href="https://isaacregalado.com/">
+<script>try{var t=localStorage.getItem("ir-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Isaac Regalado","url":"https://isaacregalado.com/","jobTitle":"Product Strategy & Operations","worksFor":{"@type":"Organization","name":"Google"},"alumniOf":[{"@type":"CollegeOrUniversity","name":"Georgia Institute of Technology"},{"@type":"CollegeOrUniversity","name":"Farmingdale State College"}],"knowsLanguage":["en","es"],"sameAs":["https://www.linkedin.com/in/isaacregalado/","https://github.com/isaacregalado"]}</script>
 <meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0D0E0D" media="(prefers-color-scheme: dark)">
 <title>Isaac Regalado</title>
@@ -26,21 +38,39 @@
   --faint: #A9AAA4;
   --line: #E1E1DB;
   --accent: #1F6B52;
+  --sky-day: #CFE0EA;
+  --sky-dusk: #EFC29A;
+  --sky-blue: #AEB8D4;
+  --sky-night: #2E3957;
+  --sil-night: #434A5E;
+  --window: #E0A23C;
+  --glass: rgba(246, 246, 243, 0.62);
+  --glass-edge: rgba(11, 11, 10, 0.08);
+  --glass-shine: rgba(255, 255, 255, 0.75);
+  --glass-shadow: rgba(30, 40, 60, 0.10);
   --f-sans: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0D0E0D; --ink: #ECECE7; --muted: #8D8E88; --faint: #50514D; --line: #242523; --accent: #63C79E;
+    --sky-day: #23323B; --sky-dusk: #4D3122; --sky-blue: #1B2542; --sky-night: #111A36; --sil-night: #07080C; --window: #F2C46B;
+    --glass: rgba(16, 17, 16, 0.55); --glass-edge: rgba(236, 236, 231, 0.09); --glass-shine: rgba(255, 255, 255, 0.07); --glass-shadow: rgba(0, 0, 0, 0.45);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0D0E0D; --ink: #ECECE7; --muted: #8D8E88; --faint: #50514D; --line: #242523; --accent: #63C79E;
+    --sky-day: #23323B; --sky-dusk: #4D3122; --sky-blue: #1B2542; --sky-night: #111A36; --sil-night: #07080C; --window: #F2C46B;
+    --glass: rgba(16, 17, 16, 0.55); --glass-edge: rgba(236, 236, 231, 0.09); --glass-shine: rgba(255, 255, 255, 0.07); --glass-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
+:root { --band: min(38vh, 340px); }
+.sky { position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: var(--band); z-index: 0; pointer-events: none; display: block; opacity: .42; }
+.wrap { position: relative; z-index: 1; }
+.horizon { height: var(--band); }
 body {
   background: var(--bg);
   color: var(--ink);
@@ -59,17 +89,37 @@ a { color: inherit; }
 ::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
 
 /* Header */
-header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-block: 32px 0; flex-wrap: wrap; }
-header .who { font-weight: 500; font-size: 0.9375rem; letter-spacing: -0.005em; }
-.links { display: flex; gap: 18px; flex-wrap: wrap; }
+html { scroll-behavior: smooth; scrollbar-color: var(--faint) transparent; }
+p { text-wrap: pretty; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+section, .fig { scroll-margin-top: 92px; }
+header.top { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 5; margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 12px 10px 20px; border-radius: 999px; overflow: hidden; }
+header .who { font-weight: 500; font-size: 0.9375rem; letter-spacing: -0.005em; text-decoration: none; white-space: nowrap; }
+.sections { display: flex; gap: 4px; }
+.sections a { font-size: 0.875rem; color: var(--muted); text-decoration: none; padding: 5px 11px; border-radius: 999px; transition: color .2s, background .2s; }
+.sections a:hover { color: var(--ink); }
+.sections a.on { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.hdr-r { display: flex; align-items: center; gap: 14px; }
+.clock { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.clock i { width: 7px; height: 7px; border-radius: 50%; background: var(--window); box-shadow: 0 0 0 3px color-mix(in srgb, var(--window) 22%, transparent); transition: background .4s, box-shadow .4s; }
+.clock.night i { background: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink) 12%, transparent); }
+.theme { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--glass-edge); background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.theme:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.theme svg { width: 14px; height: 14px; }
+header.top.glass { background: color-mix(in srgb, var(--bg) 80%, transparent); }
+.progress { position: absolute; left: 20px; right: 20px; bottom: 0; height: 1.5px; background: var(--accent); transform-origin: left; transform: scaleX(0); opacity: .85; }
+.links { display: flex; gap: 16px; }
 .links a { font-family: var(--f-mono); font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; transition: color .2s; }
 .links a:hover { color: var(--accent); }
 .links a span { display: inline-block; transition: transform .2s; }
 .links a:hover span { transform: translate(2px, -2px); }
 
 /* Intro */
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px 48px; padding-block: clamp(72px, 13vw, 136px) 56px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px 48px; padding-block: clamp(28px, 5vw, 64px) 48px; }
 .intro { display: grid; gap: 22px; max-width: 820px; min-width: 0; }
+@keyframes rise { from { transform: translateY(14px); opacity: 0; filter: blur(6px); } to { transform: none; opacity: 1; filter: none; } }
+.intro > * { animation: rise .9s cubic-bezier(.2,.7,.1,1) both; }
+.intro > *:nth-child(2) { animation-delay: .12s; } .intro > *:nth-child(3) { animation-delay: .22s; } .intro > *:nth-child(4) { animation-delay: .32s; }
 .eye { margin: 0; font-family: var(--f-mono); font-size: 13px; line-height: 1.12; letter-spacing: 0; color: var(--faint); user-select: none; white-space: pre; }
 .eye .o { color: var(--muted); }
 .eye .s { color: var(--faint); }
@@ -83,8 +133,36 @@ h1 .g { color: var(--accent); }
 .intro .sub { margin: 14px 0 0; color: var(--muted); max-width: 54ch; }
 
 /* Figure */
-figure.fig { margin: 0 0 24px; display: grid; gap: 14px; }
-.fig-top { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; border-top: 1px solid var(--ink); padding-top: 10px; }
+.glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid var(--glass-edge);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 var(--glass-shine), 0 18px 40px -24px var(--glass-shadow);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass { background: var(--bg); } }
+/* a soft, feathered frost behind each block of text, so the skyline never fights the words */
+.intro > *, .sec-head h2, .sec-head .mono, .sec-lede, .row .idx, .row h3, .row .where, .row > p, .pr .t, .pr .dn, .pr .why,
+.note > *, .off-text > p, .contact > p, footer > span, .resample, .copy { position: relative; }
+.intro > *, .sec-head h2, .sec-lede, .row h3, .row .where, .row > p, .pr .dn, .pr .why, .note > *, .off-text > p, .contact > p { justify-self: start; width: fit-content; max-width: 100%; }
+.intro > *::before, .sec-head h2::before, .sec-head .mono::before, .sec-lede::before, .row .idx::before, .row h3::before, .row .where::before, .row > p::before,
+.pr .t::before, .pr .dn::before, .pr .why::before, .note > *::before, .off-text > p::before, .contact > p::before, footer > span::before {
+  content: ""; position: absolute; inset: -6px -12px; z-index: -1; pointer-events: none; border-radius: 14px;
+  background: color-mix(in srgb, var(--bg) 50%, transparent);
+  -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+  -webkit-mask: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent), linear-gradient(transparent, #000 6px, #000 calc(100% - 6px), transparent);
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent), linear-gradient(transparent, #000 6px, #000 calc(100% - 6px), transparent);
+  mask-composite: intersect;
+}
+.resample, .copy { -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); background: color-mix(in srgb, var(--bg) 55%, transparent); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .intro > *::before, .sec-head h2::before, .sec-head .mono::before, .sec-lede::before, .row .idx::before, .row h3::before, .row .where::before, .row > p::before,
+  .pr .t::before, .pr .dn::before, .pr .why::before, .note > *::before, .off-text > p::before, .contact > p::before, footer > span::before { background: color-mix(in srgb, var(--bg) 80%, transparent); }
+}
+figure.fig { margin: 0 0 24px; display: grid; gap: 14px; padding: 8px clamp(14px, 2.4vw, 28px) 18px; }
+.fig-top { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; padding-top: 10px; }
 .fig-top .axes { flex: 1 1 260px; min-width: 0; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
 .seg button {
@@ -104,8 +182,8 @@ figure.fig { margin: 0 0 24px; display: grid; gap: 14px; }
 .legend button[aria-pressed="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
 .readout { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 4px 16px; padding-block: 6px 2px; min-height: 5.5rem; }
 .readout .ro-k { color: var(--accent); padding-top: 3px; }
-.readout h3 { margin: 0; font-weight: 500; font-size: 1.0625rem; letter-spacing: -0.01em; }
-.readout h3 .mono { margin-left: 10px; }
+.readout .ro-title { margin: 0; font-weight: 500; font-size: 1.0625rem; letter-spacing: -0.01em; }
+.readout .ro-title .mono { margin-left: 10px; }
 .readout p { margin: 4px 0 0; color: var(--muted); max-width: 64ch; }
 figcaption { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 4px 16px; border-bottom: 1px solid var(--line); padding-bottom: 16px; }
 figcaption p { margin: 0; color: var(--muted); font-size: 0.9375rem; max-width: 72ch; }
@@ -149,9 +227,11 @@ h2 { margin: 0; font-weight: 400; font-size: clamp(1.625rem, 3.2vw, 2.25rem); le
 .note p:first-of-type { color: var(--ink); }
 
 /* Workbench */
-.bench { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.tool { background: var(--bg); padding: 24px; display: grid; gap: 10px; align-content: start; transition: background .25s; }
-.tool:hover { background: color-mix(in srgb, var(--accent) 5%, var(--bg)); }
+.bench { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: hidden; }
+.tool { background: transparent; padding: 24px; display: grid; gap: 10px; align-content: start; transition: background .25s; }
+.tool:nth-child(even) { border-left: 1px solid var(--glass-edge); }
+.tool:nth-child(n+3) { border-top: 1px solid var(--glass-edge); }
+.tool:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
 .tool-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .tool h3 { margin: 0; font-weight: 500; font-size: 1.0625rem; letter-spacing: -0.01em; }
 .state { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
@@ -177,13 +257,14 @@ h2 { margin: 0; font-weight: 400; font-size: clamp(1.625rem, 3.2vw, 2.25rem); le
 }
 .movements button:hover { color: var(--ink); border-color: var(--faint); }
 .movements button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.watch { display: grid; justify-items: center; gap: 10px; }
+.watch { display: grid; justify-items: center; gap: 10px; padding: 20px 20px 16px; border-radius: 32px; }
 .watch svg { width: 220px; height: 220px; max-width: 100%; color: var(--ink); }
 
 /* Contact */
 .contact { padding-block: 112px 72px; display: grid; gap: 28px; }
-.contact p { margin: 0; font-weight: 300; font-size: clamp(1.75rem, 4.4vw, 3rem); line-height: 1.12; letter-spacing: -0.03em; max-width: 18ch; text-wrap: balance; }
-.big-links { display: grid; border-top: 1px solid var(--line); max-width: 640px; }
+.contact > p { margin: 0; font-weight: 300; font-size: clamp(1.75rem, 4.4vw, 3rem); line-height: 1.12; letter-spacing: -0.03em; max-width: 18ch; text-wrap: balance; }
+.big-links { display: grid; max-width: 640px; padding: 4px 22px; }
+.big-links a:last-child { border-bottom: 0; }
 .big-links a { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--line); text-decoration: none; transition: color .2s, padding .3s; }
 .big-links a b { font-weight: 400; font-size: 1.375rem; letter-spacing: -0.02em; }
 .big-links a:hover { color: var(--accent); padding-left: 8px; }
@@ -195,6 +276,7 @@ h2 { margin: 0; font-weight: 400; font-size: clamp(1.625rem, 3.2vw, 2.25rem); le
 @media (hover: none) { .hover-only { display: none; } .touch-only { display: inline; } }
 footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 20px 44px; border-top: 1px solid var(--line); }
 
+@media (max-width: 980px) { .sections { display: none; } }
 @media (max-width: 760px) {
   .hero { grid-template-columns: minmax(0, 1fr); }
   .eye { order: -1; font-size: 10px; }
@@ -203,13 +285,21 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   .pr { grid-template-columns: 2.5rem minmax(0, 1fr); }
   .resample, .sec-lede { margin-left: 0; padding-left: 0; }
   .bench, .notes { grid-template-columns: minmax(0, 1fr); }
+  .tool:nth-child(even) { border-left: 0; }
+  .tool + .tool { border-top: 1px solid var(--glass-edge); }
   .notes { gap: 36px; }
   .off { grid-template-columns: minmax(0, 1fr); }
   .watch { justify-items: start; }
   figcaption, .sec-head, .readout { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
-  header { flex-wrap: nowrap; padding-block: 24px 0; }
+  :root { --band: min(30vh, 230px); }
+  header.top { margin-top: 12px; padding: 8px 8px 8px 16px; gap: 10px; }
+  .clock { display: none; }
+  .links { gap: 12px; }
+  .links a { font-size: 0.6875rem; }
+  .hdr-r { gap: 10px; }
+  .progress { left: 16px; right: 16px; }
   .links { gap: 14px; flex-wrap: nowrap; }
   .links a span { display: none; }
   .hero { padding-block: 36px 40px; gap: 20px; }
@@ -226,12 +316,14 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   .legend button { flex: none; }
   .readout { min-height: 0; padding-block: 2px 0; }
   .readout p { display: none; }
-  .readout h3 .mono { display: block; margin: 2px 0 0; }
+  .readout .ro-title .mono { display: block; margin: 2px 0 0; }
   figcaption p { font-size: 0.875rem; }
   .short { display: inline; }
   .long { display: none; }
   .tool { padding: 20px; }
   .watch { justify-items: center; width: 100%; }
+  figure.fig { padding: 6px 12px 14px; margin-inline: -8px; border-radius: 18px; }
+  .big-links { padding: 2px 16px; }
   .watch svg { width: 200px; height: 200px; }
   .contact { padding-block: 80px 48px; }
   .big-links a b { font-size: 1.25rem; }
@@ -239,6 +331,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   footer { flex-direction: column; gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 </style>
@@ -246,14 +339,23 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
 </head>
 <body>
 
+<canvas class="sky" id="sky" aria-hidden="true"></canvas>
 <div class="wrap">
-  <header>
-    <span class="who">Isaac Regalado</span>
-    <nav class="links" aria-label="Elsewhere">
-      <a class="li" href="https://www.linkedin.com/in/isaacregalado/" target="_blank" rel="noopener">LinkedIn <span>↗</span></a>
-      <a class="gh" href="https://github.com/isaacregalado" target="_blank" rel="noopener">GitHub <span>↗</span></a>
-      <a href="mailto:isaacoregalado@gmail.com">Email <span>↗</span></a>
+  <header class="top glass">
+    <a class="who" href="#">Isaac Regalado</a>
+    <nav class="sections" aria-label="Sections">
+      <a href="#path">Path</a><a href="#work">How I work</a><a href="#notes">Notes</a><a href="#bench">Workbench</a><a href="#contact">Contact</a>
     </nav>
+    <div class="hdr-r">
+      <span class="clock mono" id="clock" title="The time of day follows your scroll"><i aria-hidden="true"></i><span>9:00 AM</span></span>
+      <nav class="links" aria-label="Elsewhere">
+        <a class="li" href="https://www.linkedin.com/in/isaacregalado/" target="_blank" rel="noopener">LinkedIn <span>↗</span></a>
+        <a class="gh" href="https://github.com/isaacregalado" target="_blank" rel="noopener">GitHub <span>↗</span></a>
+        <a href="mailto:isaacoregalado@gmail.com">Email <span>↗</span></a>
+      </nav>
+      <button type="button" class="theme" id="theme" aria-label="Switch between light and dark"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
+    </div>
+    <span class="progress" id="progress" aria-hidden="true"></span>
   </header>
 
   <main>
@@ -267,7 +369,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       <pre class="eye" id="eye" aria-hidden="true"></pre>
     </div>
 
-    <figure class="fig" aria-labelledby="fig-cap">
+    <figure class="fig glass" aria-labelledby="fig-cap">
       <div class="fig-top">
         <span class="mono axes" id="axes">Fig. 1 · x: time · y: scope of what I own</span>
         <div class="seg" role="group" aria-label="Vertical axis">
@@ -286,7 +388,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       </figcaption>
     </figure>
 
-    <section aria-labelledby="h-story">
+    <section id="path" aria-labelledby="h-story">
       <div class="sec-head"><span class="mono">§1</span><h2 id="h-story">The path</h2></div>
       <p class="sec-lede">Most recent first.</p>
       <ol class="story" reversed>
@@ -300,7 +402,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       </ol>
     </section>
 
-    <section aria-labelledby="h-work">
+    <section id="work" aria-labelledby="h-work">
       <div class="sec-head"><span class="mono">§2</span><h2 id="h-work">How I work</h2></div>
       <p class="sec-lede">A few things I keep coming back to. <span class="hover-only">Hover</span><span class="touch-only">Tap</span> one to watch it come out of the noise.</p>
       <ol class="principles" id="principles">
@@ -312,7 +414,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       <button type="button" class="resample" id="resample">Resample all</button>
     </section>
 
-    <section aria-labelledby="h-notes">
+    <section id="notes" aria-labelledby="h-notes">
       <div class="sec-head"><span class="mono">§3</span><h2 id="h-notes">Field notes</h2></div>
       <p class="sec-lede">Short notes from taking AI features out of the lab and into real teams.</p>
       <div class="notes">
@@ -337,10 +439,10 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       </div>
     </section>
 
-    <section aria-labelledby="h-bench">
+    <section id="bench" aria-labelledby="h-bench">
       <div class="sec-head"><span class="mono">§4</span><h2 id="h-bench">The workbench</h2></div>
       <p class="sec-lede">I build small tools for myself with Claude Code, Codex and whatever else fits the job. A few I use all the time.</p>
-      <ul class="bench">
+      <ul class="bench glass">
         <li class="tool">
           <div class="tool-top"><h3>Tee-time watcher</h3><span class="state run mono">running</span></div>
           <p>Good public tee times vanish in seconds, so latency matters. It deploys to an AWS instance in the same region as the booking system, or falls back to a Mac at home, with both nodes on a private Tailscale network. The moment a time opens, it moves.</p>
@@ -364,7 +466,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       </ul>
     </section>
 
-    <section aria-labelledby="h-off">
+    <section id="off" aria-labelledby="h-off">
       <div class="sec-head"><span class="mono">§5</span><h2 id="h-off">Off the clock</h2></div>
       <div class="off">
         <div class="off-text">
@@ -372,7 +474,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
           <p>This one keeps New York time. Pick a movement and watch the seconds hand change how it moves.</p>
           <div class="movements" role="group" aria-label="Movement" id="movements"></div>
         </div>
-        <div class="watch">
+        <div class="watch glass">
           <svg viewBox="0 0 200 200" aria-label="Watch showing the current time in New York" role="img">
             <g id="dial"></g>
             <line id="hh" x1="100" y1="108" x2="100" y2="58" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
@@ -385,10 +487,10 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       </div>
     </section>
 
-    <section class="contact" aria-labelledby="h-contact">
-      <span class="mono" id="h-contact">§6 · Contact</span>
+    <section id="contact" class="contact" aria-labelledby="h-contact">
+      <div class="sec-head"><span class="mono">§6</span><h2 id="h-contact">Contact</h2></div>
       <p>Building something people need to trust? I'd like to hear about it.</p>
-      <div class="big-links">
+      <div class="big-links glass">
         <a class="li" href="https://www.linkedin.com/in/isaacregalado/" target="_blank" rel="noopener"><b>LinkedIn</b><span class="mono">Say hello ↗</span></a>
         <a class="gh" href="https://github.com/isaacregalado" target="_blank" rel="noopener"><b>GitHub</b><span class="mono">See what I'm building ↗</span></a>
         <a href="mailto:isaacoregalado@gmail.com"><b>Email</b><span class="mono">isaacoregalado@gmail.com ↗</span></a>
@@ -399,8 +501,9 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
 
   <footer class="mono">
     <span>© 2026 Isaac Regalado · New York</span>
-    <span>Set in Geist · Drawn on canvas · No trackers</span>
+    <span>Set in Geist · Drawn on canvas · Day to night as you scroll</span>
   </footer>
+  <div class="horizon" aria-hidden="true"></div>
 </div>
 
 <script>
@@ -427,7 +530,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     [[0.04, "School"], [0.16, "A team's programs"], [0.34, "Customer accounts"], [0.52, "A function"], [0.72, "Global programs"], [0.94, "Launches at scale"]],
     [[0.04, "Not yet"], [0.24, "Adjacent"], [0.52, "The data"], [0.74, "The models"], [0.95, "Shipping AI"]]
   ];
-  var NOW = 6, active = NOW, morph = 0, morphTarget = 0;
+  var NOW = 6, active = NOW, morph = 0, morphTarget = 0, reveal = 1, lastPointer = 0, lastDraw = 0;
 
   var s = 20260427;
   function rnd() { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
@@ -513,6 +616,10 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     bracket(0, 2, narrow ? "BEFORE" : "BEFORE GOOGLE");
     bracket(3, 6, narrow ? "GOOGLE + GEORGIA TECH" : "GOOGLE, WITH GEORGIA TECH ALONGSIDE");
 
+    // draw-in on first view: everything past the reveal edge waits
+    var revX = reveal >= 1 ? W + 40 : X(stops[0].x) - 8 + (X(stops[stops.length - 1].x) - X(stops[0].x) + 30) * ease(reveal);
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, revX, H); ctx.clip();
+
     // growth area: fades toward the axis and feathers out just past the active stop (rebuilt only when it changes)
     var key = [active, morph.toFixed(3), cv.width, cv.height, col.accent].join("|");
     if (key !== fillKey) {
@@ -591,6 +698,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       ctx.fillStyle = on ? col.ink : col.muted; ctx.fillText(label, lx, ly);
     });
     ctx.textAlign = "left";
+    ctx.restore();
   }
 
   var running = false, visible = true, last = 0;
@@ -600,10 +708,13 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       var step = dt / 1000;
       morph = morphTarget > morph ? Math.min(morphTarget, morph + step) : Math.max(morphTarget, morph - step);
     }
-    draw(t);
+    if (reveal < 1) reveal = Math.min(1, reveal + dt / 1700);
+    // full rate while something moves or the pointer is near; a slow breathe otherwise
+    var busy = reveal < 1 || morph !== morphTarget || t - lastPointer < 2500;
+    if (busy ? t - lastDraw > 30 : t - lastDraw > 90) { lastDraw = t; draw(t); }
     if (!reduce && visible) requestAnimationFrame(loop); else { running = false; last = 0; }
   }
-  function kick() { if (reduce) { morph = morphTarget; draw(0); return; } if (!running) { running = true; requestAnimationFrame(loop); } }
+  function kick() { lastDraw = 0; if (reduce) { morph = morphTarget; draw(0); return; } if (!running) { running = true; requestAnimationFrame(loop); } }
 
   var legend = document.getElementById("legend");
   var rows = document.querySelectorAll(".row"), readout = document.getElementById("readout");
@@ -628,7 +739,8 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
         if (tag) tag.remove();
         readout.innerHTML = "";
         var k = document.createElement("span"); k.className = "mono ro-k"; k.textContent = String(i + 1).padStart(2, "0") + (i === NOW ? " · now" : "");
-        var d = document.createElement("div"), t = document.createElement("h3"), w = document.createElement("span"), p = document.createElement("p");
+        var d = document.createElement("div"), t = document.createElement("div"), w = document.createElement("span"), p = document.createElement("p");
+        t.className = "ro-title";
         t.textContent = h3.textContent; w.className = "mono"; w.textContent = r.querySelector(".where").textContent; t.appendChild(w);
         p.textContent = r.querySelector("p").textContent;
         d.appendChild(t); d.appendChild(p); readout.appendChild(k); readout.appendChild(d);
@@ -655,7 +767,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     return best;
   }
   cv.addEventListener("pointermove", function (e) {
-    var r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    var r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; lastPointer = performance.now();
     var h = hit(e); cv.style.cursor = h >= 0 ? "pointer" : "crosshair"; if (h >= 0 && h !== active) setActive(h);
   });
   cv.addEventListener("pointerleave", function () { mouse.x = -999; mouse.y = -999; });
@@ -667,7 +779,12 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   var mq = window.matchMedia("(prefers-color-scheme: dark)");
   if (mq.addEventListener) mq.addEventListener("change", refresh);
   new MutationObserver(refresh).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) kick(); }).observe(cv);
+  var revealed = false;
+  if ("IntersectionObserver" in window) new IntersectionObserver(function (en) {
+    visible = en[0].isIntersecting;
+    if (visible && !revealed) { revealed = true; if (!reduce) { reveal = 0; lastDraw = 0; } }
+    if (visible) kick();
+  }, { threshold: 0.25 }).observe(cv);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
 
   /* ---------- How I work: denoise ---------- */
@@ -774,7 +891,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       else { doubleNext = Math.random() < 0.18; blinkAt = now + 2000 + Math.random() * 4500; }
       return 1;
     }
-    var eyeVis = true, idleSeed = 0;
+    var eyeVis = true, idleSeed = 0, eyeLast = 0;
     if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { eyeVis = en[0].isIntersecting; if (eyeVis) requestAnimationFrame(frame); }).observe(eyeEl);
     function frame(now) {
       // with no pointer for a while (phones), glance around now and then
@@ -782,13 +899,501 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
         idleSeed = now + 1800 + Math.random() * 2600;
         target.x = (Math.random() * 2 - 1) * 0.8; target.y = (Math.random() * 2 - 1) * 0.6;
       }
-      look.x += (target.x - look.x) * 0.18; look.y += (target.y - look.y) * 0.18;
+      if (now - eyeLast < 33) { if (eyeVis) requestAnimationFrame(frame); return; }
+      eyeLast = now;
+      look.x += (target.x - look.x) * 0.3; look.y += (target.y - look.y) * 0.3;
       open = reduce ? 1 : openness(now);
       render();
       if (eyeVis) requestAnimationFrame(frame);
     }
     render();
     requestAnimationFrame(frame);
+  })();
+
+  /* ---------- Skyline: daylight at the top of the page, night over Long Island at the bottom ---------- */
+  (function () {
+    var sky = document.getElementById("sky");
+    if (!sky) return;
+    var g = sky.getContext("2d"), SW = 0, SH = 0, L = null, C = {}, dark = false, prog = 0, lastT = 0, looping = false, pending = false;
+    var moonCv = document.createElement("canvas");
+    var progEl = document.getElementById("progress"), clockEl = document.getElementById("clock"), clockTxt = clockEl && clockEl.querySelector("span");
+
+    function hex(s) {
+      s = (s || "").trim();
+      if (s[0] === "#") {
+        if (s.length === 4) s = "#" + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+        var n = parseInt(s.slice(1, 7), 16);
+        return [n >> 16 & 255, n >> 8 & 255, n & 255];
+      }
+      var m = s.match(/[\d.]+/g);
+      return m && m.length >= 3 ? [+m[0], +m[1], +m[2]] : [128, 128, 128];
+    }
+    function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+    function rgba(c, a) { return "rgba(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + "," + Math.max(0, Math.min(1, a)).toFixed(3) + ")"; }
+    function sstep(a, b, x) { var t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+    function seeded(seed) { var s = seed; return function () { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+    function inPoly(x, y, pts) {
+      var c = false;
+      for (var i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+        var xi = pts[i][0], yi = pts[i][1], xj = pts[j][0], yj = pts[j][1];
+        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c;
+      }
+      return c;
+    }
+
+    function readSky() {
+      var cs = getComputedStyle(document.documentElement);
+      ["bg", "ink", "faint", "line", "accent", "sky-day", "sky-dusk", "sky-blue", "sky-night", "sil-night", "window"].forEach(function (n) { C[n] = hex(cs.getPropertyValue("--" + n)); });
+      var b = C.bg; dark = (0.2126 * b[0] + 0.7152 * b[1] + 0.0722 * b[2]) < 128;
+    }
+
+    // time of day keyed to scroll progress: [progress, sky token, strength]
+    var KEYS = [[0, "sky-day", 0.55], [0.48, "sky-day", 0.55], [0.64, "sky-dusk", 0.62], [0.78, "sky-blue", 0.66], [0.92, "sky-night", 0.78]];
+    function skyAt(p) {
+      for (var i = 0; i < KEYS.length - 1; i++) {
+        var a = KEYS[i], b = KEYS[i + 1];
+        if (p <= b[0]) { var t = sstep(a[0], b[0], p); return { c: mix(C[a[1]], C[b[1]], t), a: a[2] + (b[2] - a[2]) * t }; }
+      }
+      var l = KEYS[KEYS.length - 1];
+      return { c: C[l[1]], a: l[2] };
+    }
+
+    function layoutScene() {
+      var r = sky.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+      SW = r.width; SH = r.height;
+      if (!SW || !SH) return;
+      sky.width = Math.round(SW * d); sky.height = Math.round(SH * d);
+      g.setTransform(d, 0, 0, d, 0, 0);
+      var narrow = SW < 700, cropL = narrow ? 0.12 : 0, cropR = narrow ? 0.7 : 1;
+      var hz = Math.round(SH * 0.68), shore = Math.round(SH * 0.9), Hs = hz - 14;
+      var R = seeded(1776), B = [];
+      function X(sx) { return (sx - cropL) / (cropR - cropL) * SW; }
+      function U(v) { return v * Hs; }
+      function Yh(v) { return hz - v * Hs; }
+      function prof(sx) { return (sx > 0.72 ? 0.09 : 0.17) + 0.5 * Math.exp(-Math.pow((sx - 0.2) / 0.07, 2)) + 0.52 * Math.exp(-Math.pow((sx - 0.53) / 0.1, 2)); }
+      function stepped(cx, steps) {
+        var Lp = [], Rp = [], y0 = hz;
+        steps.forEach(function (s) { var hw = U(s[0]), yt = Yh(s[1]); Lp.push([cx - hw, y0], [cx - hw, yt]); Rp.unshift([cx + hw, yt], [cx + hw, y0]); y0 = yt; });
+        return Lp.concat(Rp);
+      }
+      function filler(layer) {
+        var x = -10;
+        while (x < SW + 10) {
+          var w = Hs * (0.04 + R() * 0.06) * (layer ? 0.9 : 1.15);
+          var sx = cropL + (x + w / 2) / SW * (cropR - cropL);
+          var h = Hs * prof(sx) * (0.45 + R() * 0.55) * (layer ? 0.5 : 0.95);
+          if (h > 5) {
+            var top = hz - h, pts;
+            if (h > Hs * 0.22 && R() < 0.35) {
+              var ins = w * (0.15 + R() * 0.15), h2 = h * (0.12 + R() * 0.12);
+              pts = [[x, hz], [x, top + h2], [x + ins, top + h2], [x + ins, top], [x + w - ins, top], [x + w - ins, top + h2], [x + w, top + h2], [x + w, hz]];
+            } else pts = [[x, hz], [x, top], [x + w, top], [x + w, hz]];
+            var b = { pts: pts, layer: layer };
+            if (layer === 1 && h < Hs * 0.3 && R() < 0.4) b.wt = [x + w * (0.3 + R() * 0.4), top];
+            B.push(b);
+          }
+          x += w + (R() < 0.12 ? Hs * 0.025 : 0);
+        }
+      }
+
+      filler(0);
+      var x, k, t;
+      // Central Park Tower, 432 Park, Bank of America, One Vanderbilt, Citigroup
+      x = X(0.585); B.push({ pts: stepped(x, [[0.027, 0.6], [0.024, 0.86], [0.017, 0.9]]), layer: 2 });
+      x = X(0.607); B.push({ pts: stepped(x, [[0.021, 0.84]]), layer: 2 });
+      x = X(0.44); B.push({ pts: [[x - U(0.034), hz], [x - U(0.034), Yh(0.6)], [x - U(0.012), Yh(0.69)], [x + U(0.02), Yh(0.66)], [x + U(0.034), Yh(0.6)], [x + U(0.034), hz]], spire: [x - U(0.004), Yh(0.685), Yh(0.8)], layer: 2 });
+      x = X(0.505); B.push({ pts: [[x - U(0.03), hz], [x - U(0.03), Yh(0.6)], [x - U(0.016), Yh(0.68)], [x + U(0.016), Yh(0.68)], [x + U(0.03), Yh(0.6)], [x + U(0.03), hz]], spire: [x, Yh(0.68), Yh(0.76)], layer: 2 });
+      x = X(0.64); B.push({ pts: [[x - U(0.032), hz], [x - U(0.032), Yh(0.57)], [x + U(0.032), Yh(0.49)], [x + U(0.032), hz]], layer: 2 });
+      // Chrysler: setbacks, a tapering crown and a needle
+      x = X(0.535);
+      var cp = [[x - U(0.036), hz], [x - U(0.036), Yh(0.47)], [x - U(0.028), Yh(0.47)], [x - U(0.028), Yh(0.52)]];
+      for (k = 1; k <= 6; k++) { t = k / 6; cp.push([x - U(0.028) * (1 - Math.pow(t, 1.6)), Yh(0.52 + 0.145 * t)]); }
+      for (k = 5; k >= 0; k--) { t = k / 6; cp.push([x + U(0.028) * (1 - Math.pow(t, 1.6)), Yh(0.52 + 0.145 * t)]); }
+      cp.push([x + U(0.028), Yh(0.47)], [x + U(0.036), Yh(0.47)], [x + U(0.036), hz]);
+      B.push({ pts: cp, crown: Yh(0.5), spire: [x, Yh(0.665), Yh(0.74)], chrysler: [x, Yh(0.52)], layer: 2 });
+      // Empire State: setbacks, mooring mast, spire, crown lit at night
+      x = X(0.47);
+      B.push({ pts: stepped(x, [[0.07, 0.09], [0.052, 0.55], [0.04, 0.6], [0.03, 0.64], [0.02, 0.67], [0.011, 0.74]]), crown: Yh(0.6), spire: [x, Yh(0.74), Yh(0.86)], esb: true, layer: 2 });
+      // One World Trade: tapered with crossing facets and an antenna
+      x = X(0.2);
+      var bw = U(0.055), tw = U(0.028), py = Yh(0.07), ry = Yh(0.8);
+      B.push({ pts: [[x - bw, hz], [x - bw, py], [x - tw, ry], [x + tw, ry], [x + bw, py], [x + bw, hz]], spire: [x, ry, Yh(1)], facets: [[x - bw, py, x + tw, ry], [x + bw, py, x - tw, ry]], layer: 2 });
+      filler(1);
+
+      var cell = Math.max(3, Hs / 46), ww = Math.max(1, cell * 0.42), wh = Math.max(1.2, cell * 0.55);
+      B.forEach(function (b) {
+        var minX = 1e9, maxX = -1e9, minY = 1e9;
+        b.pts.forEach(function (q) { minX = Math.min(minX, q[0]); maxX = Math.max(maxX, q[0]); minY = Math.min(minY, q[1]); });
+        var top = Math.max(minY, b.crown || -1e9) + cell * 0.8, wins = [];
+        if (maxX < -20 || minX > SW + 20) { b.wins = wins; return; }
+        for (var y = top; y < hz - cell; y += cell) {
+          for (var xx = minX + cell * 0.6; xx < maxX - cell * 0.3; xx += cell * 0.9) {
+            if (!inPoly(xx - cell * 0.35, y, b.pts) || !inPoly(xx + ww + cell * 0.35, y + wh, b.pts)) continue;
+            if (R() > 0.55) continue;
+            wins.push([xx, y, 0.58 + R() * 0.38, R() < 0.16 ? 1 : 0]);
+          }
+        }
+        b.wins = wins;
+      });
+
+      var stars = [], ripples = [], grass = [], i;
+      for (i = 0; i < (narrow ? 40 : 80); i++) stars.push([R() * SW, 6 + R() * (hz - Hs * 0.35), 0.6 + R() * 0.9, R() * 6.28, 0.3 + R() * 0.7]);
+      for (i = 0; i < (narrow ? 26 : 50); i++) ripples.push([R() * SW, hz + 4 + Math.pow(R(), 1.4) * (shore - hz - 8), 6 + R() * 26]);
+      for (i = 0; i < (narrow ? 22 : 54); i++) grass.push([R() * SW, 0.4 + R() * 0.6, (R() - 0.5) * 0.7]);
+
+      var Lx = SW * (narrow ? 0.84 : 0.88);
+      function shoreY(xx) { return shore + Math.sin(xx * 0.012) * 3 + Math.sin(xx * 0.031 + 1) * 1.5 - 7 * Math.exp(-Math.pow((xx - Lx) / 36, 2)); }
+
+      var bridge = null;
+      if (!narrow) {
+        var br = { t1: X(0.79), t2: X(0.93), a1: X(0.725), a2: X(0.995), deck: hz - Hs * 0.08, top: hz - Hs * 0.42 };
+        br.mainC = 2 * (br.deck - Hs * 0.03) - br.top;
+        br.sideC = (br.deck + br.top) / 2 + Hs * 0.08;
+        br.hang = []; br.lights = [];
+        function seg(x0, y0, cy, x1, y1, step, hang) {
+          var n = Math.max(2, Math.round((x1 - x0) / step));
+          for (var j = 1; j < n; j++) {
+            var tt = j / n, yy = (1 - tt) * (1 - tt) * y0 + 2 * (1 - tt) * tt * cy + tt * tt * y1, xx2 = x0 + (x1 - x0) * tt;
+            if (hang) br.hang.push([xx2, yy]); else br.lights.push([xx2, yy]);
+          }
+        }
+        seg(br.t1, br.top, br.mainC, br.t2, br.top, 7, true);
+        seg(br.a1, br.deck, br.sideC, br.t1, br.top, 7, true);
+        seg(br.t2, br.top, br.sideC, br.a2, br.deck, 7, true);
+        seg(br.t1, br.top, br.mainC, br.t2, br.top, 10, false);
+        seg(br.a1, br.deck, br.sideC, br.t1, br.top, 10, false);
+        seg(br.t2, br.top, br.sideC, br.a2, br.deck, 10, false);
+        for (var dx = br.a1; dx < br.a2; dx += 12) br.lights.push([dx, br.deck]);
+        bridge = br;
+      }
+
+      L = { hz: hz, shore: shore, Hs: Hs, B: B, stars: stars, ripples: ripples, grass: grass, Lx: Lx, shoreY: shoreY, bridge: bridge, narrow: narrow, ww: ww, wh: wh };
+    }
+
+    function drawMoon(x, y, r, c, a) {
+      var d = sky.width / SW, s = Math.ceil(r * 2 + 4);
+      moonCv.width = Math.ceil(s * d); moonCv.height = Math.ceil(s * d);
+      var m = moonCv.getContext("2d");
+      m.setTransform(d, 0, 0, d, 0, 0);
+      m.fillStyle = rgba(c, 0.95 * a); m.beginPath(); m.arc(s / 2, s / 2, r, 0, 6.2832); m.fill();
+      m.globalCompositeOperation = "destination-out";
+      m.beginPath(); m.arc(s / 2 + r * 0.55, s / 2 - r * 0.25, r * 0.92, 0, 6.2832); m.fill();
+      m.globalCompositeOperation = "source-over";
+      g.drawImage(moonCv, x - s / 2, y - s / 2, s, s);
+    }
+    function poly(pts) { g.beginPath(); pts.forEach(function (q, i) { if (i) g.lineTo(q[0], q[1]); else g.moveTo(q[0], q[1]); }); g.closePath(); }
+    function waterTower(x, y, sc, fc) {
+      var s = Math.max(3, L.Hs * 0.022);
+      g.strokeStyle = rgba(sc, 0.9); g.fillStyle = rgba(fc, 1);
+      g.beginPath(); g.moveTo(x - s * 0.5, y); g.lineTo(x - s * 0.5, y - s * 0.6); g.moveTo(x + s * 0.5, y); g.lineTo(x + s * 0.5, y - s * 0.6); g.stroke();
+      g.beginPath(); g.rect(x - s * 0.6, y - s * 1.6, s * 1.2, s); g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(x - s * 0.72, y - s * 1.6); g.lineTo(x, y - s * 2.2); g.lineTo(x + s * 0.72, y - s * 1.6); g.closePath(); g.fill(); g.stroke();
+    }
+
+    function draw(t) {
+      if (!L) return;
+      t = t || 0;
+      var p = prog, night = sstep(0.62, 0.9, p), dusk = sstep(0.45, 0.66, p) * (1 - sstep(0.8, 0.92, p));
+      var S = skyAt(p), am = dark ? 1 : 0.8, a = S.a * am;
+      var hz = L.hz, sh = L.shore, Hs = L.Hs;
+      g.clearRect(0, 0, SW, SH);
+
+      // sky and water
+      var sg = g.createLinearGradient(0, 0, 0, hz);
+      sg.addColorStop(0, rgba(S.c, 0)); sg.addColorStop(0.45, rgba(S.c, a * 0.4)); sg.addColorStop(1, rgba(S.c, a));
+      g.fillStyle = sg; g.fillRect(0, 0, SW, hz);
+      if (dusk > 0.01) {
+        var dg = g.createLinearGradient(0, hz - Hs * 0.55, 0, hz);
+        dg.addColorStop(0, rgba(C["sky-dusk"], 0)); dg.addColorStop(1, rgba(C["sky-dusk"], 0.38 * dusk * am));
+        g.fillStyle = dg; g.fillRect(0, hz - Hs * 0.55, SW, Hs * 0.55);
+      }
+      var wg = g.createLinearGradient(0, hz, 0, sh);
+      wg.addColorStop(0, rgba(S.c, a * 0.95)); wg.addColorStop(1, rgba(S.c, a * 0.55));
+      g.fillStyle = wg; g.fillRect(0, hz, SW, sh - hz + 14);
+
+      // stars
+      var starA = sstep(0.74, 0.92, p);
+      if (starA > 0.01) {
+        var stc = dark ? C.ink : [255, 255, 255];
+        L.stars.forEach(function (s) {
+          var tw = reduce ? 1 : 0.6 + 0.4 * Math.sin(t * 0.002 * (0.5 + s[4]) + s[3]);
+          g.fillStyle = rgba(stc, starA * s[4] * tw * 0.9); g.fillRect(s[0], s[1], s[2], s[2]);
+        });
+      }
+
+      // sun sets across the first two thirds of the page
+      var sunK = sstep(0.04, 0.66, p), sunX = SW * (L.narrow ? 0.8 : 0.77), sunR = Math.max(8, Hs * 0.06);
+      var sunY = hz - Hs * 0.72 + (Hs * 0.72 + sunR + 2) * sunK;
+      if (sunY - sunR < hz) {
+        g.save(); g.beginPath(); g.rect(0, 0, SW, hz); g.clip();
+        var sc2 = mix(dark ? mix(mix(C.ink, C.window, 0.35), C.bg, 0.15) : [255, 253, 246], C["sky-dusk"], sstep(0.32, 0.58, p));
+        sc2 = mix(sc2, C.window, sstep(0.52, 0.66, p) * 0.65);
+        var gl = g.createRadialGradient(sunX, sunY, sunR * 0.5, sunX, sunY, sunR * 4.5);
+        gl.addColorStop(0, rgba(C["sky-dusk"], (0.16 + 0.34 * dusk) * am)); gl.addColorStop(1, rgba(C["sky-dusk"], 0));
+        g.fillStyle = gl; g.beginPath(); g.arc(sunX, sunY, sunR * 4.5, 0, 6.2832); g.fill();
+        g.fillStyle = rgba(sc2, 1); g.beginPath(); g.arc(sunX, sunY, sunR, 0, 6.2832); g.fill();
+        if (!dark) { g.strokeStyle = rgba(C.faint, 0.55); g.lineWidth = 1; g.stroke(); }
+        g.restore();
+      }
+
+      // moon rises at night
+      var moonA = sstep(0.7, 0.84, p), mx = SW * (L.narrow ? 0.2 : 0.33), mR = Math.max(6, Hs * 0.045), my = hz - Hs * (0.5 + 0.38 * sstep(0.7, 1, p));
+      var mc = dark ? C.ink : [252, 251, 245];
+      if (moonA > 0.01) {
+        var mg = g.createRadialGradient(mx, my, mR, mx, my, mR * 5);
+        mg.addColorStop(0, rgba(mc, 0.12 * moonA)); mg.addColorStop(1, rgba(mc, 0));
+        g.fillStyle = mg; g.beginPath(); g.arc(mx, my, mR * 5, 0, 6.2832); g.fill();
+        drawMoon(mx, my, mR, mc, moonA);
+      }
+
+      // the skyline
+      var fillC = mix(C.bg, C["sil-night"], night);
+      var strokeC = mix(mix(C.faint, C.bg, 0.25), mix(C["sil-night"], C.ink, dark ? 0.22 : 0.32), night);
+      var backFill = mix(fillC, S.c, 0.25 * a + 0.12), winC = C.window, winC2 = mix(C.window, C.ink, 0.55);
+      var lightsOn = sstep(0.62, 0.8, p);
+      g.lineWidth = 1;
+      L.B.forEach(function (b) {
+        var back = b.layer === 0;
+        poly(b.pts);
+        g.fillStyle = rgba(back ? backFill : fillC, 1); g.fill();
+        g.strokeStyle = rgba(strokeC, back ? 0.5 : 0.9); g.stroke();
+        if (b.esb && night > 0.02) {
+          g.save(); poly(b.pts); g.clip();
+          g.fillStyle = rgba(C.accent, 0.55 * night); g.fillRect(0, 0, SW, b.crown);
+          g.restore();
+        }
+        if (b.facets) {
+          g.strokeStyle = rgba(strokeC, 0.45); g.beginPath();
+          b.facets.forEach(function (f) { g.moveTo(f[0], f[1]); g.lineTo(f[2], f[3]); }); g.stroke();
+        }
+        if (b.spire) {
+          g.strokeStyle = rgba(b.esb ? mix(strokeC, C.accent, night) : strokeC, 0.9);
+          g.beginPath(); g.moveTo(b.spire[0], b.spire[1]); g.lineTo(b.spire[0], b.spire[2]); g.stroke();
+        }
+        if (b.chrysler) {
+          g.strokeStyle = rgba(mix(strokeC, winC, night), 0.45 + 0.5 * night); g.beginPath();
+          for (var k = 0; k < 5; k++) {
+            var r = Hs * 0.026 * (1 - k * 0.2), cy = b.chrysler[1] - k * Hs * 0.022;
+            g.moveTo(b.chrysler[0] - r, cy); g.arc(b.chrysler[0], cy, r, Math.PI, 0);
+          }
+          g.stroke();
+        }
+        if (b.wt) waterTower(b.wt[0], b.wt[1], strokeC, fillC);
+        if (night > 0.02 && b.wins) {
+          for (var i = 0; i < b.wins.length; i++) {
+            var w = b.wins[i], lit = sstep(w[2], w[2] + 0.035, p);
+            if (lit < 0.02) continue;
+            g.fillStyle = rgba(w[3] ? winC2 : winC, (back ? 0.5 : 0.88) * lit);
+            g.fillRect(w[0], w[1], L.ww, L.wh);
+          }
+        }
+      });
+
+      // bridge toward Long Island
+      var br = L.bridge;
+      if (br) {
+        g.strokeStyle = rgba(strokeC, 0.9);
+        g.beginPath(); g.moveTo(br.a1 - 8, br.deck); g.lineTo(br.a2 + 8, br.deck); g.stroke();
+        [br.t1, br.t2].forEach(function (tx) {
+          g.beginPath();
+          g.moveTo(tx - 2.5, hz); g.lineTo(tx - 2, br.top); g.moveTo(tx + 2.5, hz); g.lineTo(tx + 2, br.top);
+          g.moveTo(tx - 2.5, br.top + 3); g.lineTo(tx + 2.5, br.top + 3);
+          g.moveTo(tx - 2.5, (br.top + br.deck) / 2); g.lineTo(tx + 2.5, (br.top + br.deck) / 2);
+          g.stroke();
+        });
+        g.beginPath(); g.moveTo(br.a1, br.deck);
+        g.quadraticCurveTo((br.a1 + br.t1) / 2, br.sideC, br.t1, br.top);
+        g.quadraticCurveTo((br.t1 + br.t2) / 2, br.mainC, br.t2, br.top);
+        g.quadraticCurveTo((br.t2 + br.a2) / 2, br.sideC, br.a2, br.deck);
+        g.stroke();
+        g.strokeStyle = rgba(strokeC, 0.38); g.beginPath();
+        br.hang.forEach(function (h) { g.moveTo(h[0], h[1]); g.lineTo(h[0], br.deck); }); g.stroke();
+        if (lightsOn > 0.02) {
+          br.lights.forEach(function (q, i) {
+            var tw = reduce ? 1 : 0.75 + 0.25 * Math.sin(t * 0.003 + i);
+            g.fillStyle = rgba(winC, 0.9 * lightsOn * tw); g.fillRect(q[0] - 0.8, q[1] - 0.8, 1.8, 1.8);
+          });
+        }
+      }
+
+      // water: ripples by day, reflections by night
+      var dayW = 1 - night;
+      if (dayW > 0.02) {
+        g.strokeStyle = rgba(strokeC, 0.32 * dayW); g.beginPath();
+        L.ripples.forEach(function (rp) {
+          var off = reduce ? 0 : Math.sin(t * 0.0007 + rp[1]) * 3;
+          g.moveTo(rp[0] + off, rp[1]); g.lineTo(rp[0] + off + rp[2], rp[1]);
+        });
+        g.stroke();
+      }
+      if (night > 0.02) {
+        L.B.forEach(function (b) {
+          if (b.layer === 0 || !b.wins) return;
+          for (var i = 0; i < b.wins.length; i += 3) {
+            var w = b.wins[i], lit = sstep(w[2], w[2] + 0.035, p);
+            if (lit < 0.02) continue;
+            var ry = hz + (hz - w[1]) * 0.3 + 2;
+            if (ry > sh - 3) continue;
+            var jit = reduce ? 0 : Math.sin(t * 0.003 + ry * 0.7) * 1.6;
+            g.fillStyle = rgba(winC, 0.32 * lit * (1 - (ry - hz) / (sh - hz)));
+            g.fillRect(w[0] + jit, ry, L.ww * 2.4, 1);
+          }
+        });
+        if (br && lightsOn > 0.02) {
+          br.lights.forEach(function (q, i) {
+            if (i % 2) return;
+            var ry = hz + (hz - q[1]) * 0.35 + 2;
+            if (ry > sh - 3) return;
+            var jit = reduce ? 0 : Math.sin(t * 0.003 + ry) * 1.4;
+            g.fillStyle = rgba(winC, 0.28 * lightsOn); g.fillRect(q[0] + jit - 1.5, ry, 3, 1);
+          });
+        }
+      }
+      function column(cx, r, c, alpha) {
+        for (var y = hz + 3, k = 0; y < sh - 2; y += 4, k++) {
+          var wv = r * (1.5 - k * 0.07) * (0.7 + 0.3 * Math.sin(k * 1.7 + (reduce ? 0 : t * 0.002)));
+          if (wv <= 0) break;
+          g.fillStyle = rgba(c, alpha * (1 - (y - hz) / (sh - hz))); g.fillRect(cx - wv, y, wv * 2, 1);
+        }
+      }
+      if (sunY < hz && dusk > 0.05) column(sunX, sunR, C["sky-dusk"], 0.5 * dusk);
+      if (moonA > 0.05) column(mx, mR, mc, 0.3 * moonA);
+
+      // a double-ended ferry crossing the water as you scroll, with a wake behind it
+      (function () {
+        var FL = Hs * (L.narrow ? 0.42 : 0.4), fx = SW * (L.narrow ? 0.06 : 0.1) + SW * (L.narrow ? 0.5 : 0.52) * p;
+        var fy = hz + (sh - hz) * 0.5 + (reduce ? 0 : Math.sin(t * 0.002) * 0.6), hh = FL * 0.09, x0 = fx - FL / 2, x1 = fx + FL / 2;
+        // wake
+        g.strokeStyle = rgba(night > 0.5 ? winC : strokeC, night > 0.5 ? 0.22 : 0.4); g.beginPath();
+        for (var k = 1; k <= 4; k++) { var wx = x0 - k * FL * 0.16, wl = FL * (0.18 - k * 0.025); g.moveTo(wx, fy + hh * 0.9 + k * 0.6); g.lineTo(wx - wl, fy + hh * 0.9 + k * 0.6); }
+        g.stroke();
+        // hull: flat deck line, raked bow and stern
+        g.beginPath(); g.moveTo(x0, fy); g.lineTo(x1, fy); g.lineTo(x1 - FL * 0.05, fy + hh); g.lineTo(x0 + FL * 0.05, fy + hh); g.closePath();
+        g.fillStyle = rgba(fillC, 1); g.fill(); g.strokeStyle = rgba(strokeC, 0.95); g.stroke();
+        // hull stripe, ferry orange
+        g.fillStyle = rgba(C["sky-dusk"], dark ? 0.55 : 0.9); g.fillRect(x0 + FL * 0.03, fy + hh * 0.35, FL * 0.94, Math.max(1, hh * 0.28));
+        // lower and upper cabins, pilot houses at both ends, a mast
+        var c1h = FL * 0.075, c2h = FL * 0.06;
+        g.fillStyle = rgba(fillC, 1);
+        g.beginPath(); g.rect(x0 + FL * 0.1, fy - c1h, FL * 0.8, c1h); g.fill(); g.stroke();
+        g.beginPath(); g.rect(x0 + FL * 0.22, fy - c1h - c2h, FL * 0.56, c2h); g.fill(); g.stroke();
+        var ph = FL * 0.045;
+        [x0 + FL * 0.22, x1 - FL * 0.22 - FL * 0.09].forEach(function (px) { g.beginPath(); g.rect(px, fy - c1h - c2h - ph, FL * 0.09, ph); g.fill(); g.stroke(); });
+        g.beginPath(); g.moveTo(fx, fy - c1h - c2h); g.lineTo(fx, fy - c1h - c2h - FL * 0.11); g.stroke();
+        // windows glow at night, with their reflection under the hull
+        if (lightsOn > 0.02) {
+          g.fillStyle = rgba(winC, 0.9 * lightsOn);
+          for (var wxp = x0 + FL * 0.13; wxp < x0 + FL * 0.87; wxp += FL * 0.05) g.fillRect(wxp, fy - c1h * 0.65, FL * 0.025, c1h * 0.35);
+          for (wxp = x0 + FL * 0.25; wxp < x0 + FL * 0.75; wxp += FL * 0.05) g.fillRect(wxp, fy - c1h - c2h * 0.65, FL * 0.025, c2h * 0.35);
+          g.fillStyle = rgba(C.accent, 0.9 * lightsOn); g.fillRect(fx - 1, fy - c1h - c2h - FL * 0.11 - 1, 2, 2);
+          for (var rk = 0; rk < 4; rk++) {
+            var ry2 = fy + hh + 2 + rk * 2.5, jit = reduce ? 0 : Math.sin(t * 0.003 + rk) * 1.5;
+            g.fillStyle = rgba(winC, 0.22 * lightsOn * (1 - rk / 4)); g.fillRect(x0 + FL * 0.15 + jit, ry2, FL * 0.7, 1);
+          }
+        }
+      })();
+
+      // Long Island shore in the foreground, with a lighthouse
+      var fgC = mix(C.bg, C["sil-night"], night * (dark ? 1 : 0.9));
+      g.beginPath(); g.moveTo(-4, SH + 4);
+      for (var gx = -4; gx <= SW + 8; gx += 6) g.lineTo(gx, L.shoreY(gx));
+      g.lineTo(SW + 8, SH + 4); g.closePath();
+      g.fillStyle = rgba(fgC, 1); g.fill(); g.strokeStyle = rgba(strokeC, 0.9); g.stroke();
+      g.strokeStyle = rgba(strokeC, 0.6); g.beginPath();
+      L.grass.forEach(function (s) {
+        var base = L.shoreY(s[0]) + 1, hh = s[1] * SH * 0.05;
+        for (var j = 0; j < 3; j++) { g.moveTo(s[0] + j * 2, base); g.lineTo(s[0] + j * 2 + s[2] * hh, base - hh * (j === 1 ? 1 : 0.7)); }
+      });
+      g.stroke();
+
+      var Lx = L.Lx, by = L.shoreY(Lx) + 1, LH = SH * 0.25, bwL = LH * 0.09, twL = LH * 0.058, ty = by - LH * 0.74;
+      function hw(y) { return bwL + (twL - bwL) * (by - y) / (by - ty); }
+      g.strokeStyle = rgba(strokeC, 0.95);
+      g.beginPath(); g.moveTo(Lx - bwL, by); g.lineTo(Lx - twL, ty); g.lineTo(Lx + twL, ty); g.lineTo(Lx + bwL, by); g.closePath();
+      g.fillStyle = rgba(fillC, 1); g.fill(); g.stroke();
+      var s1 = by - LH * 0.4, s2 = by - LH * 0.52;
+      g.beginPath(); g.moveTo(Lx - hw(s1), s1); g.lineTo(Lx - hw(s2), s2); g.lineTo(Lx + hw(s2), s2); g.lineTo(Lx + hw(s1), s1); g.closePath();
+      g.fillStyle = rgba(strokeC, 0.35); g.fill();
+      g.beginPath(); g.moveTo(Lx - twL - 3, ty); g.lineTo(Lx + twL + 3, ty); g.stroke();
+      var lw = twL * 1.3, lh = LH * 0.11, ly = ty - lh;
+      g.fillStyle = rgba(mix(fillC, winC, night), 1); g.fillRect(Lx - lw / 2, ly, lw, lh); g.strokeRect(Lx - lw / 2, ly, lw, lh);
+      g.beginPath(); g.arc(Lx, ly, lw * 0.6, Math.PI, 0); g.closePath(); g.fillStyle = rgba(fillC, 1); g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(Lx, ly - lw * 0.6); g.lineTo(Lx, ly - lw * 0.6 - 3); g.stroke();
+      if (night > 0.15) {
+        var th = reduce ? Math.PI : t * 0.0007, cs = Math.cos(th), str = reduce ? 0.6 : Math.pow(Math.abs(cs), 3);
+        var dir = cs < 0 ? Math.PI : 0, len = SW * (L.narrow ? 0.5 : 0.38) * (0.4 + 0.6 * str), lx = Lx, lyc = ly + lh / 2;
+        var bg2 = g.createLinearGradient(lx, lyc, lx + Math.cos(dir) * len, lyc);
+        bg2.addColorStop(0, rgba(winC, 0.3 * str * night)); bg2.addColorStop(1, rgba(winC, 0));
+        g.fillStyle = bg2; g.beginPath(); g.moveTo(lx, lyc);
+        g.lineTo(lx + Math.cos(dir - 0.05) * len, lyc + Math.sin(dir - 0.05) * len - len * 0.02);
+        g.lineTo(lx + Math.cos(dir + 0.05) * len, lyc + Math.sin(dir + 0.05) * len - len * 0.02);
+        g.closePath(); g.fill();
+        var lg = g.createRadialGradient(lx, lyc, 0, lx, lyc, lw * 2.4);
+        lg.addColorStop(0, rgba(winC, 0.55 * night)); lg.addColorStop(1, rgba(winC, 0));
+        g.fillStyle = lg; g.beginPath(); g.arc(lx, lyc, lw * 2.4, 0, 6.2832); g.fill();
+      }
+    }
+
+    function measure() {
+      var de = document.documentElement, max = Math.max(1, de.scrollHeight - window.innerHeight), y = window.scrollY || de.scrollTop || 0;
+      prog = Math.min(1, Math.max(0, y / max));
+      var rem = max - y, rev = 1 - Math.min(1, rem / ((SH || 300) * 1.2));
+      sky.style.opacity = (0.42 + 0.58 * sstep(0, 1, rev)).toFixed(3);
+      if (progEl) progEl.style.transform = "scaleX(" + prog.toFixed(4) + ")";
+      if (clockEl) {
+        var mins = Math.round((9 * 60 + prog * 14.5 * 60) / 5) * 5, hr = Math.floor(mins / 60) % 24, mi = mins % 60;
+        var label = ((hr + 11) % 12 + 1) + ":" + String(mi).padStart(2, "0") + (hr < 12 ? " AM" : " PM");
+        if (clockTxt.textContent !== label) clockTxt.textContent = label;
+        clockEl.classList.toggle("night", prog > 0.74);
+      }
+    }
+    function req() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function (t) { pending = false; draw(t); maybeLoop(); });
+    }
+    function maybeLoop() {
+      if (reduce || looping || prog < 0.6 || document.hidden) return;
+      looping = true;
+      requestAnimationFrame(function lp(t) {
+        if (prog < 0.6 || document.hidden) { looping = false; return; }
+        if (t - lastT > 85) { lastT = t; draw(t); }
+        requestAnimationFrame(lp);
+      });
+    }
+
+    readSky(); layoutScene(); measure(); draw(performance.now()); maybeLoop();
+    window.addEventListener("scroll", function () { measure(); req(); }, { passive: true });
+    new ResizeObserver(function () { layoutScene(); measure(); req(); }).observe(sky);
+    var skyMq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (skyMq.addEventListener) skyMq.addEventListener("change", function () { readSky(); req(); });
+    new MutationObserver(function () { readSky(); req(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    document.addEventListener("visibilitychange", maybeLoop);
+  })();
+
+  /* ---------- Header: current section and theme ---------- */
+  (function () {
+    var links = document.querySelectorAll(".sections a"), map = {};
+    links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (en) {
+        en.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          links.forEach(function (a) { a.classList.remove("on"); });
+          var a = map[e.target.id]; if (a && window.scrollY > 240) a.classList.add("on");
+        });
+      }, { rootMargin: "-45% 0px -50% 0px" });
+      window.addEventListener("scroll", function () { if (window.scrollY <= 240) links.forEach(function (a) { a.classList.remove("on"); }); }, { passive: true });
+      Object.keys(map).forEach(function (id) { var s = document.getElementById(id); if (s) io.observe(s); });
+    }
+    var root = document.documentElement, btn = document.getElementById("theme");
+    try { var saved = localStorage.getItem("ir-theme"); if (saved === "dark" || saved === "light") root.setAttribute("data-theme", saved); } catch (e) {}
+    btn.addEventListener("click", function () {
+      var cur = root.getAttribute("data-theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("ir-theme", next); } catch (e) {}
+    });
   })();
 
   /* ---------- Copy email ---------- */
@@ -816,9 +1421,13 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     var ln = el("line", { x1: 100 + r1 * Math.sin(a), y1: 100 - r1 * Math.cos(a), x2: 100 + r2 * Math.sin(a), y2: 100 - r2 * Math.cos(a), "stroke-width": big ? 2 : 0.75 });
     ln.style.stroke = big ? "var(--ink)" : "var(--faint)"; dial.appendChild(ln);
   }
-  var lbl = el("text", { x: 100, y: 140, "text-anchor": "middle", "font-size": 8, "letter-spacing": 1 });
-  lbl.style.fill = "var(--ink)";
-  function dialLabel(m) { return m.dial + (m.bps > 1 ? " · " + (m.bps * 3600).toLocaleString("en-US") + " VPH" : ""); } lbl.style.fontFamily = "var(--f-mono)"; dial.appendChild(lbl);
+  function txt(x, y, size, ls, color, weight) { var e = el("text", { x: x, y: y, "text-anchor": "middle", "font-size": size, "letter-spacing": ls }); e.style.fill = color; e.style.fontFamily = "var(--f-mono)"; if (weight) e.style.fontWeight = weight; dial.appendChild(e); return e; }
+  var brand = txt(100, 58, 8, 2.2, "var(--ink)", 500); brand.textContent = "REGALADO";
+  var city = txt(100, 67, 5, 1.6, "var(--muted)"); city.textContent = "NEW YORK";
+  var lbl = txt(100, 136, 6, 1.4, "var(--ink)"), lbl2 = txt(100, 144, 5, 1.2, "var(--muted)");
+  var dw = el("rect", { x: 133, y: 94.5, width: 15, height: 11, rx: 1.5, "stroke-width": 0.75 }); dw.style.fill = "var(--bg)"; dw.style.stroke = "var(--faint)"; dial.appendChild(dw);
+  var dateT = txt(140.5, 102.6, 6.5, 0, "var(--ink)", 500);
+  function dialLabel(m) { lbl2.textContent = m.bps > 1 ? (m.bps * 3600).toLocaleString("en-US") + " VPH" : m.bps === 0 ? "SMOOTH SWEEP" : "1 BEAT / SEC"; return m.dial; }
 
   var mvWrap = document.getElementById("movements");
   movements.forEach(function (m) {
@@ -833,13 +1442,14 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   lbl.textContent = dialLabel(mv);
 
   var hh = document.getElementById("hh"), mh = document.getElementById("mh"), sh = document.getElementById("sh"), nyt = document.getElementById("nyt");
-  var fmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit", second: "2-digit", hour12: false });
+  var fmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit", hour12: false });
   var cache = { sec: -1, parts: null };
   function tick() {
     var now = Date.now(), whole = Math.floor(now / 1000);
     if (whole !== cache.sec) {
       cache.sec = whole; cache.parts = {};
       fmt.formatToParts(new Date(now)).forEach(function (p) { cache.parts[p.type] = +p.value; });
+      if (dateT.textContent !== String(cache.parts.day)) dateT.textContent = String(cache.parts.day);
       nyt.textContent = "New York · " + String(cache.parts.hour % 24).padStart(2, "0") + ":" + String(cache.parts.minute).padStart(2, "0");
     }
     var P = cache.parts, frac = (now % 1000) / 1000;
@@ -849,7 +1459,9 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     sh.setAttribute("transform", "rotate(" + (sec * 6) + " 100 100)");
     mh.setAttribute("transform", "rotate(" + (min * 6) + " 100 100)");
     hh.setAttribute("transform", "rotate(" + (hr * 30) + " 100 100)");
-    if (reduce || mv.bps === 1 || !watchVis) setTimeout(tick, 1005 - (Date.now() % 1000)); else requestAnimationFrame(tick);
+    if (reduce || mv.bps === 1 || !watchVis) setTimeout(tick, 1005 - (Date.now() % 1000));
+    else if (mv.bps > 1) { var beat = 1000 / mv.bps; setTimeout(tick, beat - (Date.now() % beat) + 2); }
+    else requestAnimationFrame(tick);
   }
   var watchVis = true;
   if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { watchVis = en[0].isIntersecting; }).observe(dial.ownerSVGElement);
