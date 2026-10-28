@@ -191,6 +191,8 @@ h2 { margin: 0; font-weight: 400; font-size: clamp(1.625rem, 3.2vw, 2.25rem); le
 
 .copy { justify-self: start; font: inherit; font-family: var(--f-mono); font-size: 0.75rem; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
 .copy:hover { color: var(--ink); border-color: var(--faint); }
+.short, .touch-only { display: none; }
+@media (hover: none) { .hover-only { display: none; } .touch-only { display: inline; } }
 footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 20px 44px; border-top: 1px solid var(--line); }
 
 @media (max-width: 760px) {
@@ -205,6 +207,36 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   .off { grid-template-columns: minmax(0, 1fr); }
   .watch { justify-items: start; }
   figcaption, .sec-head, .readout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  header { flex-wrap: nowrap; padding-block: 24px 0; }
+  .links { gap: 14px; flex-wrap: nowrap; }
+  .links a span { display: none; }
+  .hero { padding-block: 36px 40px; gap: 20px; }
+  .eye { font-size: 8.5px; }
+  h1 { font-size: 2.375rem; }
+  .intro .sub { margin-top: 4px; }
+  .now-line { font-size: 0.6875rem; }
+  section { padding-block: 64px 8px; gap: 28px; }
+  .sec-lede { margin-top: -10px; }
+  .plot { height: 340px; }
+  .fig-top { padding-top: 12px; }
+  .legend { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .legend::-webkit-scrollbar { display: none; }
+  .legend button { flex: none; }
+  .readout { min-height: 0; padding-block: 2px 0; }
+  .readout p { display: none; }
+  .readout h3 .mono { display: block; margin: 2px 0 0; }
+  figcaption p { font-size: 0.875rem; }
+  .short { display: inline; }
+  .long { display: none; }
+  .tool { padding: 20px; }
+  .watch { justify-items: center; width: 100%; }
+  .watch svg { width: 200px; height: 200px; }
+  .contact { padding-block: 80px 48px; }
+  .big-links a b { font-size: 1.25rem; }
+  .big-links a .mono { font-size: 0.6875rem; }
+  footer { flex-direction: column; gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -250,7 +282,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       <div class="readout" id="readout" aria-live="polite"></div>
       <figcaption id="fig-cap">
         <span class="mono">Caption</span>
-        <p><b>Seven chapters, one direction.</b> Time runs left to right. The vertical axis shows how much I owned in each chapter, or switch to AI depth to see how close the work moved to the models. Each cloud of points is the work in that chapter, and it grows as the work did. Pick a stop and its chapter appears just above.</p>
+        <p><b>Seven chapters, one direction.</b> <span class="short">Time runs left to right. Tap a stop to see each chapter.</span><span class="long">Time runs left to right. The vertical axis shows how much I owned in each chapter, or switch to AI depth to see how close the work moved to the models. Each cloud of points is the work in that chapter, and it grows as the work did. Pick a stop and its chapter appears just above.</span></p>
       </figcaption>
     </figure>
 
@@ -270,7 +302,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
 
     <section aria-labelledby="h-work">
       <div class="sec-head"><span class="mono">§2</span><h2 id="h-work">How I work</h2></div>
-      <p class="sec-lede">A few things I keep coming back to. Hover one to watch it come out of the noise.</p>
+      <p class="sec-lede">A few things I keep coming back to. <span class="hover-only">Hover</span><span class="touch-only">Tap</span> one to watch it come out of the noise.</p>
       <ol class="principles" id="principles">
         <li class="pr" tabindex="0"><span class="t mono" aria-hidden="true">t=0</span><div><p class="dn"><span class="sr">Close the loop.</span><span class="nz" aria-hidden="true">Close the loop.</span></p><p class="why">If you asked someone for feedback, tell them what happened to it.</p></div></li>
         <li class="pr" tabindex="0"><span class="t mono" aria-hidden="true">t=0</span><div><p class="dn"><span class="sr">Ship when the people using it say it's ready.</span><span class="nz" aria-hidden="true">Ship when the people using it say it's ready.</span></p><p class="why">The calendar is a guess. Usage is evidence.</p></div></li>
@@ -420,6 +452,8 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     PAD.l = W < 620 ? 14 : 124;
+    PAD.r = W < 620 ? 26 : 20;
+    PAD.t = W < 620 ? 46 : 40;
   }
   function X(v) { return PAD.l + v * (W - PAD.l - PAD.r); }
   function Y(v) { return H - PAD.b - v * (H - PAD.t - PAD.b); }
@@ -453,9 +487,8 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
         ctx.beginPath(); ctx.moveTo(PAD.l, y); ctx.lineTo(W - PAD.r, y); ctx.stroke(); ctx.setLineDash([]);
         ctx.font = "400 10.5px " + col.mono; ctx.fillStyle = col.muted;
         if (narrow) {
-          // the path runs bottom-left to top-right, so high ticks label on the left and low ticks on the right
-          if (tk[0] >= 0.45) { ctx.textAlign = "left"; ctx.fillText(tk[1].toUpperCase(), PAD.l + 8, y - 8); }
-          else if (tk[0] > 0.1) { ctx.textAlign = "right"; ctx.fillText(tk[1].toUpperCase(), W - PAD.r, y - 8); }
+          // phones: label only the top of the scale, in the empty top-left corner
+          if (tk === TICKS[set][TICKS[set].length - 1]) { ctx.textAlign = "left"; ctx.fillText(tk[1].toUpperCase() + " \u2191", PAD.l + 10, y); }
         }
         else { ctx.textAlign = "right"; ctx.fillText(tk[1].toUpperCase(), PAD.l - 12, y); }
       });
@@ -491,14 +524,14 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       fc.beginPath(); fc.moveTo(X(stops[0].x), H - PAD.b); fc.lineTo(X(stops[0].x), Y(sy(stops[0], m)));
       curve(fc, 0, stops.length - 1, m, false);
       var lastS = stops[stops.length - 1];
-      fc.lineTo(W, Y(sy(lastS, m))); fc.lineTo(W, H - PAD.b); fc.closePath();
+      fc.lineTo(W - PAD.r, Y(sy(lastS, m))); fc.lineTo(W - PAD.r, H - PAD.b); fc.closePath();
       fc.fillStyle = col.accent; fc.fill();
       // vertical fade, then horizontal feather, applied as alpha masks
       fc.globalCompositeOperation = "destination-in";
       var va = fc.createLinearGradient(0, PAD.t, 0, H - PAD.b);
       va.addColorStop(0, "rgba(0,0,0,0.2)"); va.addColorStop(0.35, "rgba(0,0,0,0.11)"); va.addColorStop(0.7, "rgba(0,0,0,0.04)"); va.addColorStop(1, "rgba(0,0,0,0)");
       fc.fillStyle = va; fc.fillRect(0, 0, W, H);
-      var ax = X(stops[active].x), fw = Math.max(140, W * 0.22), hg = fc.createLinearGradient(ax - fw * 0.15, 0, ax + fw, 0);
+      var ax = X(stops[active].x), fw = Math.min(Math.max(140, W * 0.22), Math.max(24, W - PAD.r - ax)), hg = fc.createLinearGradient(ax - fw * 0.15, 0, ax + fw, 0);
       [[0, 1], [0.2, 0.82], [0.4, 0.52], [0.6, 0.26], [0.8, 0.08], [1, 0]].forEach(function (st) { hg.addColorStop(st[0], "rgba(0,0,0," + st[1] + ")"); });
       fc.fillStyle = hg; fc.fillRect(0, 0, W, H);
       fc.globalCompositeOperation = "source-over";
@@ -507,9 +540,9 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
 
     // point clouds
     var drift = reduce ? 0 : 1;
-    for (var i = 0; i < pts.length; i++) {
+    for (var i = 0; i < (narrow ? 0 : pts.length); i++) {
       var p = pts[i], c = stops[p.c];
-      var px = X(c.x + p.dx), py = Y(sy(c, m) + p.dy);
+      var px = X(c.x + p.dx * (narrow ? 0.75 : 1)), py = Y(sy(c, m) + p.dy * (narrow ? 0.8 : 1));
       var tx = 0, ty = 0;
       if (!reduce) {
         var ddx = px - mouse.x, ddy = py - mouse.y, d = Math.hypot(ddx, ddy);
@@ -519,7 +552,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       px += p.ox + Math.sin(t * 0.0005 + p.p) * 1.3 * drift;
       py += p.oy + Math.cos(t * 0.0004 + p.p * 1.3) * 1.3 * drift;
       var on = p.c === active;
-      ctx.globalAlpha = on ? 0.8 : (p.c <= active ? 0.3 : 0.14);
+      ctx.globalAlpha = on ? 0.8 : (p.c <= active ? (narrow ? 0.22 : 0.3) : 0.12);
       ctx.fillStyle = on ? col.accent : col.ink;
       ctx.beginPath(); ctx.arc(px, py, on ? 1.6 : 1.25, 0, 6.2832); ctx.fill();
     }
@@ -533,6 +566,14 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
     // stops and labels
     stops.forEach(function (c, i) {
       var x = X(c.x), y = Y(sy(c, m)), on = i === active;
+      if (narrow) {
+        // phones: a soft disc per chapter instead of a point cloud; it grows with each chapter
+        var rr = 7 + i * 2.2;
+        ctx.globalAlpha = on ? 0.22 : (i <= active ? 0.1 : 0.05);
+        ctx.fillStyle = on || i <= active ? col.accent : col.ink;
+        ctx.beginPath(); ctx.arc(x, y, rr, 0, 6.2832); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
       if (on && !reduce) {
         var pr = (t % 2400) / 2400;
         ctx.globalAlpha = 1 - pr; ctx.strokeStyle = col.accent; ctx.lineWidth = 1;
@@ -542,7 +583,7 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
       ctx.strokeStyle = i <= active ? col.accent : col.faint; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(x, y, on ? 5.5 : 4, 0, 6.2832); ctx.fill(); ctx.stroke();
       var label = String(i + 1).padStart(2, "0") + (narrow && !on ? "" : "  " + c.k.toUpperCase());
-      ctx.font = "500 11px " + col.mono;
+      ctx.font = (narrow ? "500 10.5px " : "500 11px ") + col.mono;
       var pos = LPOS[i], tw = ctx.measureText(label).width, lx = x - 10, ly = pos === "b" ? y + 18 : y - 18, align = "left";
       if (pos === "A" || lx + tw > W - PAD.r) { lx = x + 10; align = "right"; }
       ctx.textAlign = align;
@@ -575,7 +616,10 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
   });
   function setActive(i) {
     active = i;
-    legend.querySelectorAll("button").forEach(function (b, j) { b.setAttribute("aria-pressed", j === i ? "true" : "false"); });
+    legend.querySelectorAll("button").forEach(function (b, j) {
+      b.setAttribute("aria-pressed", j === i ? "true" : "false");
+      if (j === i && legend.scrollWidth > legend.clientWidth) legend.scrollTo({ left: b.offsetLeft - legend.offsetLeft - 8, behavior: reduce ? "auto" : "smooth" });
+    });
     rows.forEach(function (r) {
       var on = +r.getAttribute("data-k") === i;
       r.classList.toggle("active", on);
